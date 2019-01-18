@@ -6,7 +6,8 @@
   {applications,
    [kernel,
     stdlib,
-    erlware_commons
+    hex_core,
+    elli
    ]},
   {env,[{repo_name, <<"mirrormaster">>},
         {package_dir, "/tmp/hex_packages"}]},

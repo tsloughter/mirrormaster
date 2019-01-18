@@ -1,6 +1,6 @@
 %%
 -record(package, {key :: {unicode:unicode_binary(), ec_semver:semver()},
-                  version :: ec_semver:version_string(),
+                  version :: binary(),
                   checksum :: binary(),
                   dependencies :: [dependency()],
                   retired :: retirement_status()}).
