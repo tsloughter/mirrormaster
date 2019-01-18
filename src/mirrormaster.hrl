@@ -1,9 +1,9 @@
 %%
--record(package, {key :: {unicode:unicode_binary(), ec_semver:semver()},
-                  version :: binary(),
-                  checksum :: binary(),
-                  dependencies :: [dependency()],
-                  retired :: retirement_status()}).
+-record(package, {key :: {unicode:unicode_binary(), binary() | '_'},
+                  version :: binary() | '_',
+                  checksum :: binary() | '_',
+                  dependencies :: [dependency()] | '_',
+                  retired :: retirement_status() | '_'}).
 -type package() :: #package{}.
 
 -type dependency() :: #{package := unicode:unicode_binary(),

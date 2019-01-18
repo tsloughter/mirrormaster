@@ -26,8 +26,6 @@ store(Name, Release=#{version := Version,
 to_core_maps(Packages) ->
     [#{version => Version,
        checksum => Checksum,
-       dependencies => Dependencies,
-       retired => Retired} || #package{version=Version,
-                                       checksum=Checksum,
-                                       dependencies=Dependencies,
-                                       retired=Retired} <- Packages].
+       dependencies => Dependencies} || #package{version=Version,
+                                                 checksum=Checksum,
+                                                 dependencies=Dependencies} <- Packages].

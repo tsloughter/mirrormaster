@@ -8,14 +8,17 @@
 -include("mirrormaster.hrl").
 -include_lib("elli/include/elli.hrl").
 
--type args() :: #{package_dir := file:name_all()}.
+-type args() :: #{repo_name := binary(),
+                  repos := [hex_core:config()],
+                  package_dir := file:name_all(),
+                  private_key := binary()}.
 
 -spec handle(Req, Args) -> Result when
       Req    :: elli:req(),
-      Args   :: args(),
+      Args   :: [args()],
       Result :: elli_handler:result().
-handle(Req, Args) ->
-    handle(Req#req.method, elli_request:path(Req), Req, Args).
+handle(Req, [Map]) ->
+    handle(Req#req.method, elli_request:path(Req), Req, Map).
 
 -spec handle(Method, Path, Req, Args) -> elli_handler:result() when
       Method :: elli:http_method(),
@@ -33,11 +36,7 @@ handle('GET', [<<"packages">>, Name], _Req, #{repo_name := RepoName,
                 _ = mm_packages:store(Name, R),
                 R;
             Packages ->
-                [#{version => Version,
-                   checksum => Checksum,
-                   dependencies => Dependencies} || #package{version=Version,
-                                                             checksum=Checksum,
-                                                             dependencies=Dependencies} <- Packages]
+                mm_packages:to_core_maps(Packages)
         end,
 
     Package = hex_registry:encode_package(#{repository => RepoName,
@@ -64,7 +63,7 @@ handle('GET', [<<"tarballs">>, Filename], _Req, #{repos := [HexConfig | _],
 
 -spec handle_event(Event, Args, Config) -> ok when
       Event  :: elli:event(),
-      Args   :: args(),
+      Args   :: [args()],
       Config :: [tuple()].
 handle_event(_, _, _) ->
     ok.
