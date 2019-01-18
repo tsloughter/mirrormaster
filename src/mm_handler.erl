@@ -7,6 +7,7 @@
 
 -include("mirrormaster.hrl").
 -include_lib("elli/include/elli.hrl").
+-include_lib("kernel/include/logger.hrl").
 
 -type args() :: #{repo_name := binary(),
                   repos := [hex_core:config()],
@@ -28,6 +29,7 @@ handle(Req, [Map]) ->
 handle('GET', [<<"packages">>, Name], _Req, #{repo_name := RepoName,
                                               repos := [HexConfig | _],
                                               private_key := PrivateKey}) ->
+    ?LOG_DEBUG("request=/packages/:name name=~s", [Name]),
     Releases =
         case mm_packages:by_name(Name) of
             [] ->
@@ -47,15 +49,18 @@ handle('GET', [<<"packages">>, Name], _Req, #{repo_name := RepoName,
     {ok, [{<<"Content-Type">>, <<"application/octet-stream">>}], zlib:gzip(SignedPackage)};
 handle('GET', [<<"tarballs">>, Filename], _Req, #{repos := [HexConfig | _],
                                                   package_dir := PackageDir}) ->
+    ?LOG_DEBUG("request=/tarballs/:filename filename=~s", [Filename]),
     FullPath = filename:join(PackageDir, Filename),
     case filelib:is_file(FullPath) of
         true ->
             ok;
         false ->
             [Name, Version] = string:split(filename:basename(Filename, ".tar"), "-"),
+            ?LOG_DEBUG("fetch=begin name=~s version=~s", [Name, Version]),
             {ok, {200, _, Tarball}} =
                 hex_repo:get_tarball(HexConfig, Name, Version),
-            file:write_file(FullPath, Tarball)
+            file:write_file(FullPath, Tarball),
+            ?LOG_DEBUG("fetch=complete path=~s", [FullPath])
     end,
 
     Size = elli_util:file_size(FullPath),

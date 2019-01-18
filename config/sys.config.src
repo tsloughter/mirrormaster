@@ -4,6 +4,7 @@
   {kernel,
    [{logger,
      [{handler, default, logger_std_h,
-       #{filters => [{progress, {fun logger_filters:progress/2, stop}}],
-         formatter => {logger_formatter, #{single_line => true}}}}]}]}
+       #{formatter => {logger_formatter, #{single_line => true}},
+         filter_default => log,
+         filters => [{progress, {fun logger_filters:progress/2, stop}}]}}]}]}
 ].
