@@ -1,0 +1,12 @@
+{"1.1.0",
+[{<<"cf">>,{pkg,<<"cf">>,<<"0.3.1">>},1},
+ {<<"elli">>,
+  {git,"https://github.com/elli-lib/elli.git",
+       {ref,"cb8ffcdd95cf67ecfd4e8a5d0f79b87e40bb85ba"}},
+  0},
+ {<<"erlware_commons">>,{pkg,<<"erlware_commons">>,<<"1.2.0">>},0}]}.
+[
+{pkg_hash,[
+ {<<"cf">>, <<"5CB902239476E141EA70A740340233782D363A31EEA8AD37049561542E6CD641">>},
+ {<<"erlware_commons">>, <<"2BAB99CF88941145767A502F1209886F1F0D31695EEF21978A30F15E645721E0">>}]}
+].

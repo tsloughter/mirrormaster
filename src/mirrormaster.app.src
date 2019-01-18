@@ -1,0 +1,18 @@
+{application, mirrormaster,
+ [{description, "Hex mirror and private repository"},
+  {vsn, "git"},
+  {registered, []},
+  {mod, {mirrormaster_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    erlware_commons
+   ]},
+  {env,[{repo_name, <<"mirrormaster">>},
+        {package_dir, "/tmp/hex_packages"}]},
+  {modules, []},
+
+  {maintainers, []},
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
